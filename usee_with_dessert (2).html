@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Birthday Input</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Itim&family=Kanit:wght@300;400;500;600&display=swap');
+    
+    body {
+      font-family: 'Itim', 'Kanit', cursive, sans-serif;
+      background: #fff0fb;
+      margin: 0;
+      overflow-x: hidden;
+    }
+    .centered {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      animation: fadeIn 1s ease-in;
+    }
+    .container {
+      display: flex;
+      border: 4px solid hotpink;
+      border-radius: 25px;
+      padding: 20px;
+      background: white;
+    }
+    .photo-strip {
+      border: 4px dashed hotpink;
+      border-radius: 15px;
+      overflow: hidden;
+      margin-right: 20px;
+      width: 150px;
+      height: 400px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #fff0fb;
+      color: #d63384;
+      font-weight: bold;
+      font-family: 'Itim', cursive;
+      font-size: 16px;
+    }
+    .photo-strip img {
+      width: 100%;
+      display: block;
+    }
+    .keypad {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .keypad h2 {
+      margin-bottom: 15px;
+      color: #d63384;
+      background: pink;
+      padding: 10px 20px;
+      border-radius: 15px;
+      font-family: 'Itim', cursive;
+      font-weight: 400;
+    }
+    .display {
+      background: #ffe6f0;
+      padding: 10px 20px;
+      border-radius: 10px;
+      font-size: 18px;
+      margin-bottom: 15px;
+      min-width: 180px;
+      text-align: center;
+      border: 1px solid #ffb6c1;
+      font-family: 'Itim', cursive;
+    }
+    .buttons {
+      display: grid;
+      grid-template-columns: repeat(3, 60px);
+      gap: 10px;
+    }
+    .buttons button {
+      width: 60px;
+      height: 60px;
+      font-size: 20px;
+      border: none;
+      border-radius: 30px;
+      background: pink;
+      color: white;
+      cursor: pointer;
+      transition: background 0.2s;
+      font-family: 'Itim', cursive;
+      font-weight: 500;
+    }
+    .buttons button:hover {
+      background: #ff69b4;
+    }
+    .enter-button, .back-button {
+      margin-top: 15px;
+      background-color: #ff66a5;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 20px;
+      font-size: 16px;
+      cursor: pointer;
+      font-family: 'Itim', cursive;
+      font-weight: 500;
+    }
+    .enter-button:hover, .back-button:hover {
+      background-color: #e05590;
+    }
+    .greeting-page {
+      background: linear-gradient(135deg, #fff0fb 0%, #ffe6f0 100%);
+      text-align: center;
+      padding: 40px;
+      animation: fadeIn 1s ease-in;
+      position: relative;
+      min-height: 100vh;
+      overflow: hidden;
+    }
+    .greeting-page h1 {
+      font-size: 48px;
+      color: #d63384;
+      z-index: 10;
+      position: relative;
+      font-family: 'Itim', cursive;
+      font-weight: 400;
+    }
+    .greeting-page p {
+      font-size: 24px;
+      max-width: 600px;
+      margin: auto;
+      color: #b30059;
+      z-index: 10;
+      position: relative;
+      font-family: 'Kanit', sans-serif;
+      font-weight: 400;
+      line-height: 1.6;
+    }
+    .greeting-page .emoji {
+      font-size: 40px;
+      margin: 20px 0;
+      z-index: 10;
+      position: relative;
+    }
+    
+    /* Floating dessert background */
+    .dessert-bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 1;
+    }
+    
+    .floating-dessert {
+      position: absolute;
+      font-size: 40px;
+      opacity: 0.6;
+      animation: float 6s ease-in-out infinite;
+    }
+    
+    .floating-dessert:nth-child(1) { left: 10%; top: 20%; animation-delay: 0s; }
+    .floating-dessert:nth-child(2) { left: 80%; top: 15%; animation-delay: 1s; }
+    .floating-dessert:nth-child(3) { left: 15%; top: 60%; animation-delay: 2s; }
+    .floating-dessert:nth-child(4) { left: 75%; top: 70%; animation-delay: 3s; }
+    .floating-dessert:nth-child(5) { left: 45%; top: 10%; animation-delay: 4s; }
+    .floating-dessert:nth-child(6) { left: 20%; top: 85%; animation-delay: 5s; }
+    .floating-dessert:nth-child(7) { left: 85%; top: 45%; animation-delay: 1.5s; }
+    .floating-dessert:nth-child(8) { left: 5%; top: 40%; animation-delay: 3.5s; }
+    .floating-dessert:nth-child(9) { left: 60%; top: 25%; animation-delay: 2.5s; }
+    .floating-dessert:nth-child(10) { left: 90%; top: 80%; animation-delay: 4.5s; }
+    .floating-dessert:nth-child(11) { left: 30%; top: 75%; animation-delay: 0.5s; }
+    .floating-dessert:nth-child(12) { left: 70%; top: 55%; animation-delay: 5.5s; }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      25% { transform: translateY(-20px) rotate(5deg); }
+      50% { transform: translateY(-10px) rotate(-3deg); }
+      75% { transform: translateY(-25px) rotate(7deg); }
+    }
+    
+    /* Audio Player Styles */
+    .audio-player {
+      margin: 30px 0;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.9);
+      border-radius: 20px;
+      backdrop-filter: blur(10px);
+      border: 2px solid #ffb6c1;
+      max-width: 400px;
+      margin-left: auto;
+      margin-right: auto;
+      z-index: 10;
+      position: relative;
+      box-shadow: 0 8px 32px rgba(255, 182, 193, 0.3);
+    }
+    
+    .audio-controls {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 15px;
+    }
+    
+    .now-playing {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: linear-gradient(45deg, #ff66a5, #ff99cc);
+      padding: 10px 20px;
+      border-radius: 15px;
+      color: white;
+      font-family: 'Itim', cursive;
+      font-size: 16px;
+      animation: musicPulse 2s ease-in-out infinite;
+    }
+    
+    .music-note {
+      animation: bounce 1s ease-in-out infinite alternate;
+    }
+    
+    .music-note:nth-child(3) {
+      animation-delay: 0.5s;
+    }
+    
+    .volume-control {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 16px;
+      width: 100%;
+      justify-content: center;
+    }
+    
+    #volumeSlider {
+      width: 150px;
+      height: 8px;
+      border-radius: 5px;
+      background: linear-gradient(to right, #ffb6c1, #ff99cc);
+      outline: none;
+      -webkit-appearance: none;
+      opacity: 0.8;
+      transition: opacity 0.3s;
+    }
+    
+    #volumeSlider:hover {
+      opacity: 1;
+    }
+    
+    #volumeSlider::-webkit-slider-thumb {
+      appearance: none;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: linear-gradient(45deg, #ff66a5, #ff99cc);
+      cursor: pointer;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      transition: transform 0.2s;
+    }
+    
+    #volumeSlider::-webkit-slider-thumb:hover {
+      transform: scale(1.1);
+    }
+    
+    #volumeSlider::-moz-range-thumb {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      background: linear-gradient(45deg, #ff66a5, #ff99cc);
+      cursor: pointer;
+      border: none;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+    
+    #volumePercent {
+      font-family: 'Itim', cursive;
+      font-weight: 500;
+      color: #d63384;
+      min-width: 40px;
+    }
+    
+    @keyframes musicPulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.02); }
+    }
+    
+    @keyframes bounce {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(-5px); }
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  
+.photo-frame {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 400px;
+  height: 500px;
+  border: 4px dashed #ff66a5;
+  border-radius: 20px;
+  background-color: #fff0fb;
+  color: #d63384;
+  font-family: 'Itim', cursive;
+  font-size: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 5;
+}
+.left-frame {
+  left: 40px;
+}
+.right-frame {
+  right: 40px;
+}
+
+
+#playPauseBtn {
+  font-size: 24px;
+  background: linear-gradient(45deg, #ff66a5, #ff99cc);
+  border: none;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  cursor: pointer;
+  color: white;
+  box-shadow: 0 4px 8px rgba(255, 182, 193, 0.4);
+  transition: transform 0.2s;
+}
+#playPauseBtn:hover {
+  transform: scale(1.1);
+}
+
+
+#playPauseBtn i {
+  color: white;
+}
+
+</style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+<body>
+<div class="dessert-bg">
+  <div class="floating-dessert">🧁</div>
+  <div class="floating-dessert">🍰</div>
+  <div class="floating-dessert">🍪</div>
+  <div class="floating-dessert">🍩</div>
+  <div class="floating-dessert">🎂</div>
+  <div class="floating-dessert">🍭</div>
+  <div class="floating-dessert">🍬</div>
+  <div class="floating-dessert">🥧</div>
+  <div class="floating-dessert">🧁</div>
+  <div class="floating-dessert">🍰</div>
+  <div class="floating-dessert">🍪</div>
+  <div class="floating-dessert">🍩</div>
+</div>
+
+  <div class="centered" id="main">
+    <div class="container">
+      <div class="photo-strip">
+        Your Photo Here
+      </div>
+      <div class="keypad">
+        <h2>Enter Birthday</h2>
+        <div class="display" id="display">----</div>
+        <div class="buttons">
+          <button onclick="appendDigit('1')">1</button>
+          <button onclick="appendDigit('2')">2</button>
+          <button onclick="appendDigit('3')">3</button>
+          <button onclick="appendDigit('4')">4</button>
+          <button onclick="appendDigit('5')">5</button>
+          <button onclick="appendDigit('6')">6</button>
+          <button onclick="appendDigit('7')">7</button>
+          <button onclick="appendDigit('8')">8</button>
+          <button onclick="appendDigit('9')">9</button>
+          <button onclick="appendDigit('/')">/</button>
+          <button onclick="appendDigit('0')">0</button>
+          <button onclick="appendDigit('-')">-</button>
+        </div>
+        <button class="enter-button" onclick="showGreeting()">Enter Birthday</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const display = document.getElementById('display');
+    let input = '';
+
+    function appendDigit(digit) {
+      if (input.length >= 10) return;
+      input += digit;
+      display.textContent = input;
+    }
+
+    function showGreeting() {
+      if (input.length > 0) {
+        document.body.innerHTML = `
+          <div class="greeting-page">
+
+<div class="photo-frame left-frame">Put your photo here</div>
+<div class="photo-frame right-frame">Put your photo here</div>
+
+            <div class="dessert-bg">
+              <div class="floating-dessert">🧁</div>
+              <div class="floating-dessert">🍰</div>
+              <div class="floating-dessert">🍪</div>
+              <div class="floating-dessert">🍩</div>
+              <div class="floating-dessert">🎂</div>
+              <div class="floating-dessert">🍭</div>
+              <div class="floating-dessert">🍬</div>
+              <div class="floating-dessert">🥧</div>
+              <div class="floating-dessert">🧁</div>
+              <div class="floating-dessert">🍰</div>
+              <div class="floating-dessert">🍪</div>
+              <div class="floating-dessert">🍩</div>
+            </div>
+            <h1>🎈 Happy Birthday! 🎂</h1>
+            <div class="emoji">💖🌸🎉✨💜</div>
+            <p>
+              ขอให้วันเกิดปีนี้เป็นวันพิเศษที่สุดสำหรับเธอ<br>
+              เต็มไปด้วยรอยยิ้ม เสียงหัวเราะ และความสุขล้นใจ 💕<br>
+              ขอให้สมหวังในทุกสิ่งที่ตั้งใจ และเจอแต่เรื่องดี ๆ ในทุกวันนะ!
+            </p>
+            <div class="emoji">✨🧸🌸🌟🎉</div>
+            
+            <!-- Audio Player Section -->
+            <div class="audio-player">
+              <div class="audio-controls">
+                <div class="now-playing">
+                  <span class="music-note">🎵</span>
+                  <span id="songTitle">Happy Birthday Melody</span>
+                  <span class="music-note">🎵</span>
+                </div>
+                
+<button id="playPauseBtn" onclick="togglePlayPause()">
+  <i class="fas fa-pause" id="icon"></i>
+</button>
+
+<div class="volume-control">
+                  <span>🔊</span>
+                  <input type="range" id="volumeSlider" min="0" max="100" value="50" onchange="changeVolume()">
+                  <span id="volumePercent">50%</span>
+                </div>
+              </div>
+              <audio id="birthdayMusic" loop autoplay>
+                <source src="Best Part - Daniel Caesar (feat. H.E.R.)  Lyrics & แปล.mp3" type="audio/mpeg">
+                <!-- ใส่ลิงก์เพลงที่ต้องการได้ที่นี่ -->
+              </audio>
+            </div>
+            
+            <button class="back-button" onclick="goBack()">ย้อนกลับ</button>
+          </div>
+        `;
+      }
+    }
+
+    function goBack() {
+      // หยุดเพลงก่อนกลับไปหน้าแรก
+      const audio = document.getElementById('birthdayMusic');
+      if (audio) {
+        audio.pause();
+        audio.currentTime = 0;
+      }
+      location.reload();
+    }
+    
+    // ฟังก์ชันสำหรับปรับระดับเสียง
+    function changeVolume() {
+      const audio = document.getElementById('birthdayMusic');
+      const volumeSlider = document.getElementById('volumeSlider');
+      const volumePercent = document.getElementById('volumePercent');
+      
+      audio.volume = volumeSlider.value / 100;
+      volumePercent.textContent = volumeSlider.value + '%';
+    }
+    
+    // เริ่มเล่นเพลงอัตโนมัติเมื่อโหลดหน้า
+    window.addEventListener('load', function() {
+      const audio = document.getElementById('birthdayMusic');
+      if (audio) {
+        // ตั้งค่าเสียงเริ่มต้น
+        audio.volume = 0.5;
+        
+        // พยายามเล่นเพลงอัตโนมัติ
+        const playPromise = audio.play();
+        
+        if (playPromise !== undefined) {
+          playPromise.catch(error => {
+            // หากไม่สามารถเล่นอัตโนมัติได้ (เนื่องจากนโยบายของเบราว์เซอร์)
+            console.log('Autoplay prevented:', error);
+          });
+        }
+      }
+    });
+  
+function togglePlayPause() {
+  const audio = document.getElementById('birthdayMusic');
+  const btnIcon = document.getElementById('icon');
+  if (audio.paused) {
+    audio.play();
+    btnIcon.className = 'fas fa-pause';
+  } else {
+    audio.pause();
+    btnIcon.className = 'fas fa-play';
+  }
+}
+
+</script>
+</body>
+</html>
