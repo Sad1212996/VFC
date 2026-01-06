@@ -1,10 +1,6 @@
-"","","","","","","","","",""
-"","","","","","","","","",""
-"","","","","","","","","",""
-"id","A","B","D","","","","","",""
-"2","d","sad","sad","","","","","",""
-"3","dd","sadsad","ss","","","","","",""
-"4","sad","sad","sad","","","","","",""
-"5","sad","asd","sasda","","","","","",""
-"6","sad","sda","sad","","","","","",""
-"7","sadasd","sad","saddd","","","","","",""
+ID,Name,Gender,Hometown,Age,Scores
+1,Bob,Male,Bangkok,16,90
+2,Alice,Female,Chiangmai,15,84
+3,Tom,Male,Khonkaen,14,78
+4,Tim,Male,Buriram,17,92
+5,Lisa,Female,Loei,16,88
